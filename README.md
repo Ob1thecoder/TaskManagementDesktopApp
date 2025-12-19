@@ -8,3 +8,6 @@ For Desktop development, run:
 
 For Android development, run:
   npm run tauri android dev```
+
+
+  
