@@ -1,13 +1,10 @@
-```Template created! To get started run:
-  cd Daily-Tasks-Management
-  npm install
-  npm run tauri android init
+# Task Management System
 
-For Desktop development, run:
-  npm run tauri dev
 
-For Android development, run:
-  npm run tauri android dev```
+A desktop application to help user with managing taks with optimization feature to allocate ideal time to start
+
+Newest Released
+
 
 
   

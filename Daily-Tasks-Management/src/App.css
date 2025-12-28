@@ -1,12 +1,51 @@
+:root{
+  --color-background: #f9fafb;
+  --color-text: #111827;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-secondary: #d1d5db;
+  --color-secondary-hover: #9ca3af;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-text: #991b1b;
+  --color-error-description: #b91c1c;
+  --color-subtitle: #6b7280;
+}
 
-
+:dark-theme{
+  --color-background: #2f2f2f;
+  --color-text: #f6f6f6;
+  --color-primary: #24c8db;
+  --color-primary-hover: #1fb3d1;
+  --color-secondary: #4b5563;
+  --color-secondary-hover: #6b7280;
+  --color-error-bg: #7f1d1d;
+  --color-error-border: #991b1b;
+  --color-error-text: #fca5a5;
+  --color-error-description: #fecaca;
+  --color-subtitle: #9ca3af;
+}
+:root{
+  background-color: var(--color-background);
+  color: var(--color-text);
+  
+}
 
 /* Main Container */
-.app-container {
-  min-height: 100vh;
+.app-container-light {
+  min-height: 200vh;
   background-color: #f9fafb;
   color: #111827;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition-duration: 3ms;
+}
+
+.app-container-dark {
+  min-height: 100vh;
+  background-color: #163758;
+  color: #dbe4f7;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition-duration: 3ms;
 }
 
 /* Header */

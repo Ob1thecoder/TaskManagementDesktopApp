@@ -6,19 +6,24 @@ interface TaskListProps {
   onEdit: (task: Task) => void;
   onDelete: (taskId: number) => void;
   onToggleComplete: (taskId: number) => void;
+  isDarkMode: boolean;
 }
 
-export function TaskList({ tasks, onEdit, onDelete, onToggleComplete }: TaskListProps) {
+export function TaskList({ tasks, onEdit, onDelete, onToggleComplete, isDarkMode }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="bg-gray-50 rounded-lg p-8 text-center">
-        <div className="text-gray-400 mb-2">
+      <div className={`rounded-lg p-8 text-center ${
+        isDarkMode ? 'bg-gray-800' : 'bg-gray-50'
+      }`}>
+        <div className={isDarkMode ? 'text-gray-500' : 'text-gray-400'}>
           <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-500 mb-1">No tasks yet</h3>
-        <p className="text-gray-400">Add your first task to get started!</p>
+        <h3 className={`text-lg font-medium mb-1 ${
+          isDarkMode ? 'text-white' : 'text-gray-500'
+        }`}>No tasks yet</h3>
+        <p className={isDarkMode ? 'text-gray-400' : 'text-gray-400'}>Add your first task to get started!</p>
       </div>
     );
   }
@@ -32,7 +37,9 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete }: TaskList
       {/* Pending Tasks */}
       {pendingTasks.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          <h2 className={`text-lg font-semibold mb-3 ${
+            isDarkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Pending Tasks ({pendingTasks.length})
           </h2>
           <div className="space-y-2">
@@ -43,6 +50,7 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete }: TaskList
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onToggleComplete={onToggleComplete}
+                isDarkMode={isDarkMode}
               />
             ))}
           </div>
@@ -52,7 +60,9 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete }: TaskList
       {/* Completed Tasks */}
       {completedTasks.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+          <h2 className={`text-lg font-semibold mb-3 ${
+            isDarkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             Completed Tasks ({completedTasks.length})
           </h2>
           <div className="space-y-2">
@@ -63,6 +73,7 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete }: TaskList
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onToggleComplete={onToggleComplete}
+                isDarkMode={isDarkMode}
               />
             ))}
           </div>
