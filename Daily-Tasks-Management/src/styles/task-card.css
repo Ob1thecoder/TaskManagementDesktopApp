@@ -1,0 +1,198 @@
+/* Task Card Styles */
+.task-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid;
+  transition: box-shadow 0.2s;
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-card.light {
+  background-color: white;
+  border-color: #e5e7eb;
+  color: #111827;
+}
+
+.task-card.dark {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: white;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.task-title.completed {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+.task-title.light {
+  color: #111827;
+}
+
+.task-title.dark {
+  color: white;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  flex-wrap: wrap;
+}
+
+.task-meta.light {
+  color: #6b7280;
+}
+
+.task-meta.dark {
+  color: #d1d5db;
+}
+
+.priority-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid;
+  font-size: 0.75rem;
+}
+
+/* Priority Colors - Light Mode */
+.priority-badge.priority-5.light {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.priority-badge.priority-4.light {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border-color: #fed7aa;
+}
+
+.priority-badge.priority-3.light {
+  background-color: #fefce8;
+  color: #a16207;
+  border-color: #fde047;
+}
+
+.priority-badge.priority-2.light {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border-color: #93c5fd;
+}
+
+.priority-badge.priority-1.light {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+/* Priority Colors - Dark Mode */
+.priority-badge.priority-5.dark {
+  background-color: rgba(127, 29, 29, 0.3);
+  color: #fca5a5;
+  border-color: #991b1b;
+}
+
+.priority-badge.priority-4.dark {
+  background-color: rgba(154, 52, 18, 0.3);
+  color: #fed7aa;
+  border-color: #c2410c;
+}
+
+.priority-badge.priority-3.dark {
+  background-color: rgba(161, 98, 7, 0.3);
+  color: #fde047;
+  border-color: #a16207;
+}
+
+.priority-badge.priority-2.dark {
+  background-color: rgba(29, 78, 216, 0.3);
+  color: #93c5fd;
+  border-color: #1d4ed8;
+}
+
+.priority-badge.priority-1.dark {
+  background-color: #374151;
+  color: #d1d5db;
+  border-color: #4b5563;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.task-btn.complete {
+  background-color: #10b981;
+  color: white;
+}
+
+.task-btn.complete:hover {
+  background-color: #059669;
+}
+
+.task-btn.mark-complete.light {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.task-btn.mark-complete.light:hover {
+  background-color: #d1d5db;
+}
+
+.task-btn.mark-complete.dark {
+  background-color: #374151;
+  color: #d1d5db;
+}
+
+.task-btn.mark-complete.dark:hover {
+  background-color: #4b5563;
+}
+
+.task-btn.edit {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.task-btn.edit:hover {
+  background-color: #2563eb;
+}
+
+.task-btn.delete {
+  background-color: #ef4444;
+  color: white;
+}
+
+.task-btn.delete:hover {
+  background-color: #dc2626;
+}

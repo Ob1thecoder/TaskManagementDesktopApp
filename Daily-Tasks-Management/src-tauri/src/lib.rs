@@ -2,15 +2,16 @@
 mod commands;
 mod model;
 mod database;
+mod optimization;
 
-use commands::DbState;
 use database::Database;
+use std::sync::Mutex;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Initialize database
     let db = Database::new("tasks.db").expect("Failed to initialize database");
-    let db_state = DbState::new(db);
+    let db_state = Mutex::new(db);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -23,7 +24,8 @@ pub fn run() {
             commands::get_task,
             commands::update_task,
             commands::delete_task,
-            commands::toggle_task_completion
+            commands::toggle_task_completion, 
+            commands::optimize_tasks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

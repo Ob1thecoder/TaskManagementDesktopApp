@@ -1,0 +1,76 @@
+/* Task List Styles */
+.task-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.empty-state {
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state.light {
+  background-color: #f9fafb;
+}
+
+.empty-state.dark {
+  background-color: #1f2937;
+}
+
+.empty-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
+}
+
+.empty-icon.light {
+  color: #9ca3af;
+}
+
+.empty-icon.dark {
+  color: #6b7280;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.empty-title.light {
+  color: #6b7280;
+}
+
+.empty-title.dark {
+  color: white;
+}
+
+.empty-description {
+  color: #9ca3af;
+}
+
+.task-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.section-title.light {
+  color: #111827;
+}
+
+.section-title.dark {
+  color: white;
+}
+
+.tasks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

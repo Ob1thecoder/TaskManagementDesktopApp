@@ -1,5 +1,6 @@
 import { Task } from '../types/Tasks';
 import { TaskCard } from './TaskCard';
+import '../styles/task-list.css';
 
 interface TaskListProps {
   tasks: Task[];
@@ -12,18 +13,14 @@ interface TaskListProps {
 export function TaskList({ tasks, onEdit, onDelete, onToggleComplete, isDarkMode }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className={`rounded-lg p-8 text-center ${
-        isDarkMode ? 'bg-gray-800' : 'bg-gray-50'
-      }`}>
-        <div className={isDarkMode ? 'text-gray-500' : 'text-gray-400'}>
-          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className={`empty-state ${isDarkMode ? 'dark' : 'light'}`}>
+        <div className={`empty-icon ${isDarkMode ? 'dark' : 'light'}`}>
+          <svg className="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <h3 className={`text-lg font-medium mb-1 ${
-          isDarkMode ? 'text-white' : 'text-gray-500'
-        }`}>No tasks yet</h3>
-        <p className={isDarkMode ? 'text-gray-400' : 'text-gray-400'}>Add your first task to get started!</p>
+        <h3 className={`empty-title ${isDarkMode ? 'dark' : 'light'}`}>No tasks yet</h3>
+        <p className="empty-description">Add your first task to get started!</p>
       </div>
     );
   }
@@ -33,16 +30,14 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete, isDarkMode
   const completedTasks = tasks.filter(task => task.completed);
 
   return (
-    <div className="space-y-6">
+    <div className="task-list-container">
       {/* Pending Tasks */}
       {pendingTasks.length > 0 && (
-        <div>
-          <h2 className={`text-lg font-semibold mb-3 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
+        <div className="task-section">
+          <h2 className={`section-title ${isDarkMode ? 'dark' : 'light'}`}>
             Pending Tasks ({pendingTasks.length})
           </h2>
-          <div className="space-y-2">
+          <div className="tasks-grid">
             {pendingTasks.map(task => (
               <TaskCard
                 key={task.id}
@@ -59,13 +54,11 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete, isDarkMode
 
       {/* Completed Tasks */}
       {completedTasks.length > 0 && (
-        <div>
-          <h2 className={`text-lg font-semibold mb-3 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
+        <div className="task-section">
+          <h2 className={`section-title ${isDarkMode ? 'dark' : 'light'}`}>
             Completed Tasks ({completedTasks.length})
           </h2>
-          <div className="space-y-2">
+          <div className="tasks-grid">
             {completedTasks.map(task => (
               <TaskCard
                 key={task.id}

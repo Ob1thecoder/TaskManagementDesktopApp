@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TaskFormData } from '../types/Tasks';
+import '../styles/components.css';
 
 interface TaskFormProps {
   onSubmit: (taskData: TaskFormData) => void;
@@ -32,21 +33,13 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
   };
 
   return (
-    <div className={`shadow-lg rounded-lg p-6 mb-6 border ${
-      isDarkMode 
-        ? 'bg-gray-800 border-gray-700 text-white' 
-        : 'bg-white border-gray-200 text-gray-900'
-    }`}>
-      <h2 className={`text-xl font-semibold mb-4 ${
-        isDarkMode ? 'text-white' : 'text-gray-900'
-      }`}>Add New Task</h2>
+    <div className={`form-container ${isDarkMode ? 'dark' : 'light'}`}>
+      <h2 className={`form-title ${isDarkMode ? 'dark' : 'light'}`}>Add New Task</h2>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="form">
         {/* Title */}
-        <div>
-          <label htmlFor="title" className={`block text-sm font-medium mb-1 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
+        <div className="form-group">
+          <label htmlFor="title" className={`form-label ${isDarkMode ? 'dark' : 'light'}`}>
             Task Title *
           </label>
           <input
@@ -55,21 +48,15 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              isDarkMode 
-                ? 'border-gray-600 bg-gray-700 text-white placeholder-gray-400' 
-                : 'border-gray-300 bg-white text-gray-900'
-            }`}
+            className={`form-input ${isDarkMode ? 'dark' : 'light'}`}
             placeholder="Enter task title..."
             required
           />
         </div>
 
         {/* Priority */}
-        <div>
-          <label htmlFor="priority" className={`block text-sm font-medium mb-1 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
+        <div className="form-group">
+          <label htmlFor="priority" className={`form-label ${isDarkMode ? 'dark' : 'light'}`}>
             Priority
           </label>
           <select
@@ -77,11 +64,7 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              isDarkMode 
-                ? 'border-gray-600 bg-gray-700 text-black' 
-                : 'border-gray-300 bg-white text-gray-900'
-            }`}
+            className={`form-select ${isDarkMode ? 'dark' : 'light'}`}
           >
             <option value="1">1 - Lowest</option>
             <option value="2">2 - Low</option>
@@ -92,10 +75,8 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
         </div>
 
         {/* Deadline */}
-        <div>
-          <label htmlFor="deadline" className={`block text-sm font-medium mb-1 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
+        <div className="form-group">
+          <label htmlFor="deadline" className={`form-label ${isDarkMode ? 'dark' : 'light'}`}>
             Deadline *
           </label>
           <input
@@ -104,27 +85,19 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
             name="deadline"
             value={formData.deadline}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              isDarkMode 
-                ? 'border-gray-600 bg-gray-700 text-white' 
-                : 'border-gray-300 bg-white text-gray-900'
-            }`}
+            className={`form-input ${isDarkMode ? 'dark' : 'light'}`}
             required
           />
         </div>
 
         {/* Estimated Time */}
-        <div>
-          <label className={`block text-sm font-medium mb-1 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
+        <div className="form-group">
+          <label className={`form-label ${isDarkMode ? 'dark' : 'light'}`}>
             Estimated Time
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="time-grid">
             <div>
-              <label htmlFor="estimatedHours" className={`block text-xs mb-1 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>Hours</label>
+              <label htmlFor="estimatedHours" className={`time-label ${isDarkMode ? 'dark' : 'light'}`}>Hours</label>
               <input
                 type="number"
                 id="estimatedHours"
@@ -133,17 +106,11 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
                 onChange={handleChange}
                 min="0"
                 max="24"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                  isDarkMode 
-                    ? 'border-gray-600 bg-gray-700 text-white' 
-                    : 'border-gray-300 bg-white text-gray-900'
-                }`}
+                className={`form-input ${isDarkMode ? 'dark' : 'light'}`}
               />
             </div>
             <div>
-              <label htmlFor="estimatedMinutes" className={`block text-xs mb-1 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>Minutes</label>
+              <label htmlFor="estimatedMinutes" className={`time-label ${isDarkMode ? 'dark' : 'light'}`}>Minutes</label>
               <input
                 type="number"
                 id="estimatedMinutes"
@@ -151,22 +118,16 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
                 value={formData.estimatedMinutes}
                 onChange={handleChange}
                 min="0"
-                max="24"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                  isDarkMode 
-                    ? 'border-gray-600 bg-gray-700 text-white' 
-                    : 'border-gray-300 bg-white text-gray-900'
-                }`}
+                max="59"
+                className={`form-input ${isDarkMode ? 'dark' : 'light'}`}
               />
             </div>
           </div>
         </div>
 
         {/* Start Date (Optional) */}
-        <div>
-          <label htmlFor="startDate" className={`block text-sm font-medium mb-1 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}>
+        <div className="form-group">
+          <label htmlFor="startDate" className={`form-label ${isDarkMode ? 'dark' : 'light'}`}>
             Start Date (Optional)
           </label>
           <input
@@ -175,30 +136,19 @@ export function TaskForm({ onSubmit, onCancel, isDarkMode }: TaskFormProps) {
             name="startDate"
             value={formData.startDate}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              isDarkMode 
-                ? 'border-gray-600 bg-gray-700 text-white' 
-                : 'border-gray-300 bg-white text-gray-900'
-            }`}
+            className={`form-input ${isDarkMode ? 'dark' : 'light'}`}
           />
         </div>
 
         {/* Buttons */}
-        <div className="flex space-x-3 pt-4">
-          <button
-            type="submit"
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-          >
+        <div className="form-buttons">
+          <button type="submit" className="btn-submit">
             Add Task
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className={`flex-1 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${
-              isDarkMode 
-                ? 'bg-gray-600 text-gray-200 hover:bg-gray-500 focus:ring-gray-500' 
-                : 'bg-gray-300 text-gray-700 hover:bg-gray-400 focus:ring-gray-500'
-            }`}
+            className={`btn-cancel ${isDarkMode ? 'dark' : 'light'}`}
           >
             Cancel
           </button>

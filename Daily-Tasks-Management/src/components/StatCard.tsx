@@ -1,4 +1,5 @@
 import { Task } from '../types/Tasks';
+import '../styles/stat-card.css';
 
 interface StatCardProps {
   tasks: Task[];
@@ -43,21 +44,17 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
     };
   };
 
-  const cardStyle = isDarkMode
-    ? 'bg-gray-800 text-white border-gray-700'
-    : 'bg-white text-gray-800 border-gray-300';
-
   return (
-    <div className={`p-6 rounded-lg shadow-md border ${cardStyle} w-full max-w-sm`}>
-      <h2 className={`text-xl font-bold mb-6 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+    <div className={`stat-card ${isDarkMode ? 'dark' : 'light'}`}>
+      <h2 className={`stat-title ${isDarkMode ? 'dark' : 'light'}`}>
         Task Statistics
       </h2>
       
       {/* Pie Chart */}
-      <div className="flex justify-center mb-6">
+      <div className="chart-container">
         {total === 0 ? (
-          <div className="text-center">
-            <svg width="200" height="200" viewBox="0 0 200 200" className="mx-auto">
+          <div className="empty-chart">
+            <svg width="200" height="200" viewBox="0 0 200 200">
               <circle 
                 cx="100" 
                 cy="100" 
@@ -68,12 +65,12 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
                 strokeDasharray="5,5"
               />
             </svg>
-            <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`empty-chart-text ${isDarkMode ? 'dark' : 'light'}`}>
               No tasks yet
             </p>
           </div>
         ) : (
-          <div className="relative">
+          <div className="chart-svg">
             <svg width="200" height="200" viewBox="0 0 200 200">
               {/* Pending tasks slice */}
               {pendingTasks > 0 && (
@@ -108,7 +105,7 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
                 x="100" 
                 y="95" 
                 textAnchor="middle" 
-                className={`text-3xl font-bold ${isDarkMode ? 'fill-white' : 'fill-gray-900'}`}
+                className={`chart-text-large ${isDarkMode ? 'dark' : 'light'}`}
               >
                 {total}
               </text>
@@ -116,7 +113,7 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
                 x="100" 
                 y="115" 
                 textAnchor="middle" 
-                className={`text-sm ${isDarkMode ? 'fill-gray-400' : 'fill-gray-600'}`}
+                className={`chart-text-small ${isDarkMode ? 'dark' : 'light'}`}
               >
                 Total
               </text>
@@ -126,36 +123,36 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
       </div>
       
       {/* Legend */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-blue-500"></div>
-            <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+      <div className="legend">
+        <div className="legend-item">
+          <div className="legend-label">
+            <div className="legend-color pending"></div>
+            <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
               Pending
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <div className="legend-value">
+            <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
               {pendingTasks}
             </span>
-            <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
               ({pendingPercentage.toFixed(0)}%)
             </span>
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-green-500"></div>
-            <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+        <div className="legend-item">
+          <div className="legend-label">
+            <div className="legend-color completed"></div>
+            <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
               Completed
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <div className="legend-value">
+            <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
               {completedTasks}
             </span>
-            <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
               ({completedPercentage.toFixed(0)}%)
             </span>
           </div>
