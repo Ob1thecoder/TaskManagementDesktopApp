@@ -11,6 +11,7 @@ export interface Task {
   category?: string;
   reminderEnabled: boolean;
   reminderMinutes: number;
+  projectId?: number;
   createdAt: string;          
 }
 
