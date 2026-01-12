@@ -1,11 +1,11 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-mod commands;
-mod model;
-mod database;
-mod optimization;
-mod projects;
-mod services;
-mod git;
+pub mod commands;
+pub mod model;
+pub mod database;
+pub mod optimization;
+pub mod projects;
+pub mod services;
+pub mod git;
 
 use database::Database;
 use services::ServiceManager;

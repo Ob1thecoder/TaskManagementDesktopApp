@@ -371,9 +371,6 @@ pub fn git_pull(db: State<DbState>, project_id: u32) -> Result<(), String> {
     let head_commit = head.peel_to_commit()
         .map_err(|e| format!("Failed to peel to commit: {}", e))?;
     
-    let mut index = repo.index()
-        .map_err(|e| format!("Failed to get index: {}", e))?;
-    
     repo.merge_commits(&head_commit, &fetch_commit, None)
         .map_err(|e| format!("Failed to merge: {}", e))?;
     
