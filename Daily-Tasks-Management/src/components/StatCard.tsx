@@ -45,13 +45,14 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
   };
 
   return (
+    
     <div className={`stat-card ${isDarkMode ? 'dark' : 'light'}`}>
-      <h2 className={`stat-title ${isDarkMode ? 'dark' : 'light'}`}>
-        Task Statistics
-      </h2>
+      
       
       {/* Pie Chart */}
+      
       <div className="chart-container">
+        
         {total === 0 ? (
           <div className="empty-chart">
             <svg width="200" height="200" viewBox="0 0 200 200">
@@ -118,46 +119,50 @@ export function StatCard({ tasks, isDarkMode }: StatCardProps) {
                 Total
               </text>
             </svg>
+            {/* Legend */}
+            <div className="legend">
+              <div className="legend-item">
+                <div className="legend-label">
+                  <div className="legend-color pending"></div>
+                  <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
+                    Pending
+                  </span>
+                </div>
+                <div className="legend-value">
+                  <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
+                    {pendingTasks}
+                  </span>
+                  <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
+                    ({pendingPercentage.toFixed(0)}%)
+                  </span>
+                </div>
+              </div>
+              
+              <div className="legend-item">
+                <div className="legend-label">
+                  <div className="legend-color completed"></div>
+                  <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
+                    Completed
+                  </span>
+                </div>
+                <div className="legend-value">
+                  <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
+                    {completedTasks}
+                  </span>
+                  <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
+                    ({completedPercentage.toFixed(0)}%)
+                  </span>
+                </div>
+              </div>
+            </div>
+            {/*  */}
+            
+            
           </div>
         )}
       </div>
       
-      {/* Legend */}
-      <div className="legend">
-        <div className="legend-item">
-          <div className="legend-label">
-            <div className="legend-color pending"></div>
-            <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
-              Pending
-            </span>
-          </div>
-          <div className="legend-value">
-            <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
-              {pendingTasks}
-            </span>
-            <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
-              ({pendingPercentage.toFixed(0)}%)
-            </span>
-          </div>
-        </div>
-        
-        <div className="legend-item">
-          <div className="legend-label">
-            <div className="legend-color completed"></div>
-            <span className={`legend-text ${isDarkMode ? 'dark' : 'light'}`}>
-              Completed
-            </span>
-          </div>
-          <div className="legend-value">
-            <span className={`legend-count ${isDarkMode ? 'dark' : 'light'}`}>
-              {completedTasks}
-            </span>
-            <span className={`legend-percentage ${isDarkMode ? 'dark' : 'light'}`}>
-              ({completedPercentage.toFixed(0)}%)
-            </span>
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 }

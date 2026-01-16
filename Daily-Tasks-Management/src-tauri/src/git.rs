@@ -42,6 +42,7 @@ pub fn get_git_status(repo_path: &str) -> Result<GitStatus, String> {
     })
 }
 
+
 pub fn get_current_branch(repo_path: &str) -> Result<String, String> {
     let repo = Repository::open(repo_path)
         .map_err(|e| format!("Failed to open repository: {}", e))?;

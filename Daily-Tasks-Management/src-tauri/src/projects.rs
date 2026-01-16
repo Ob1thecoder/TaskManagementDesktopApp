@@ -32,7 +32,7 @@ impl ProjectManager {
         
         // Try to detect project type
         let project_type = if path.join("package.json").exists() {
-            Some("Node.js".to_string())
+            Some("Node.js / Typescript / React".to_string())
         } else if path.join("Cargo.toml").exists() {
             Some("Rust".to_string())
         } else if path.join("requirements.txt").exists() || path.join("pyproject.toml").exists() {

@@ -1,8 +1,9 @@
 [package]
 name = "daily-tasks-management"
 version = "0.1.0"
-description = "A Tauri App"
+description = "Local Development Dashboard - A unified desktop application for managing development environments"
 authors = ["you"]
+license = "MIT"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -17,6 +18,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
+[dev-dependencies]
+tempfile = "3"
+
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
@@ -28,7 +32,4 @@ git2 = "0.18"
 tokio = { version = "1", features = ["full"] }
 sysinfo = "0.30"
 nix = { version = "0.27", features = ["signal"] }
-
-[dev-dependencies]
-tempfile = "3.8"
 

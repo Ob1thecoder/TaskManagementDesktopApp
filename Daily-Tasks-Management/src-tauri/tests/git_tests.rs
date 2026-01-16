@@ -10,14 +10,44 @@ fn setup_test_repo() -> (TempDir, String) {
     // Initialize a git repository
     let repo = Repository::init(path).expect("Failed to init repo");
     
-    // Create a test file and commit
-    let test_file = path.join("test.txt");
-    fs::write(&test_file, "test content").expect("Failed to write test file");
-    
     // Configure git user (required for commits)
     let mut config = repo.config().expect("Failed to get config");
     config.set_str("user.name", "Test User").ok();
     config.set_str("user.email", "test@example.com").ok();
+    
+    // Create a test file
+    let test_file = path.join("test.txt");
+    fs::write(&test_file, "test content").expect("Failed to write test file");
+    
+    // Stage and commit the file
+    let mut index = repo.index().expect("Failed to get index");
+    index.add_path(std::path::Path::new("test.txt")).expect("Failed to add file");
+    index.write().expect("Failed to write index");
+    let tree_id = index.write_tree().expect("Failed to write tree");
+    let tree = repo.find_tree(tree_id).expect("Failed to find tree");
+    
+    let sig = repo.signature().expect("Failed to get signature");
+    
+    // Determine default branch name (try main first, then master)
+    let branch_name = if repo.find_reference("refs/heads/main").is_ok() {
+        "main"
+    } else {
+        "main" 
+    };
+    
+    // Create initial commit on the branch
+    let commit_oid = repo.commit(
+        Some(&format!("refs/heads/{}", branch_name)),
+        &sig,
+        &sig,
+        "Initial commit",
+        &tree,
+        &[],
+    ).expect("Failed to create initial commit");
+    
+    // Ensure HEAD points to the branch
+    repo.set_head(&format!("refs/heads/{}", branch_name))
+        .expect("Failed to set HEAD");
     
     let repo_path = path.to_str().unwrap().to_string();
     (temp_dir, repo_path)

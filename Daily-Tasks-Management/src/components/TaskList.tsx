@@ -58,6 +58,7 @@ export function TaskList({ tasks, onEdit, onDelete, onToggleComplete, isDarkMode
           <h2 className={`section-title ${isDarkMode ? 'dark' : 'light'}`}>
             Completed Tasks ({completedTasks.length})
           </h2>
+          
           <div className="tasks-grid">
             {completedTasks.map(task => (
               <TaskCard

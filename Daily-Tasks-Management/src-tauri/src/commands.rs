@@ -310,6 +310,58 @@ pub fn git_commit(
 }
 
 #[tauri::command]
+pub fn open_in_vscode(project_path: String) -> Result<(), String> {
+    use std::process::Command;
+    
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("code")
+            .arg(&project_path)
+            .spawn()
+            .map_err(|e| format!("Failed to open VS Code: {}. Make sure VS Code is installed and 'code' is in your PATH.", e))?;
+    }
+    
+    #[cfg(target_os = "macos")]
+    {
+        Command::new("open")
+            .args(&["-a", "Visual Studio Code", &project_path])
+            .spawn()
+            .map_err(|e| format!("Failed to open VS Code: {}. Make sure VS Code is installed.", e))?;
+    }
+    
+    #[cfg(target_os = "linux")]
+    {
+        // Try 'code' command first (if VS Code CLI is installed)
+        if Command::new("code")
+            .arg(&project_path)
+            .spawn()
+            .is_ok() {
+            return Ok(());
+        }
+        
+        // Fallback: try common VS Code installation paths
+        let code_paths = [
+            "/usr/bin/code",
+            "/usr/local/bin/code",
+            "/snap/bin/code",
+        ];
+        
+        for code_path in &code_paths {
+            if Command::new(code_path)
+                .arg(&project_path)
+                .spawn()
+                .is_ok() {
+                return Ok(());
+            }
+        }
+        
+        return Err("Failed to open VS Code. Please install VS Code and ensure 'code' command is available, or install VS Code from snap store.".to_string());
+    }
+    
+    Ok(())
+}
+
+#[tauri::command]
 pub fn git_push(db: State<DbState>, project_id: u32) -> Result<(), String> {
     let db = db.lock().map_err(|e| format!("Database lock error: {}", e))?;
     
@@ -320,22 +372,8 @@ pub fn git_push(db: State<DbState>, project_id: u32) -> Result<(), String> {
     let repo_path = ProjectManager::find_git_repository(&project.path)
         .ok_or_else(|| "No git repository found".to_string())?;
     
-    let repo = git2::Repository::open(&repo_path)
-        .map_err(|e| format!("Failed to open repository: {}", e))?;
-    
-    let head = repo.head()
-        .map_err(|e| format!("Failed to get HEAD: {}", e))?;
-    let branch_name = head.shorthand()
-        .ok_or_else(|| "No branch name found".to_string())?;
-    
-    let mut remote = repo.find_remote("origin")
-        .map_err(|_| "No remote 'origin' found".to_string())?;
-    
-    let mut push_options = git2::PushOptions::new();
-    remote.push(
-        &[&format!("refs/heads/{}", branch_name)],
-        Some(&mut push_options),
-    ).map_err(|e| format!("Failed to push: {}", e))?;
+    // Open VS Code so user can use integrated git features
+    open_in_vscode(repo_path)?;
     
     Ok(())
 }
@@ -351,28 +389,8 @@ pub fn git_pull(db: State<DbState>, project_id: u32) -> Result<(), String> {
     let repo_path = ProjectManager::find_git_repository(&project.path)
         .ok_or_else(|| "No git repository found".to_string())?;
     
-    let repo = git2::Repository::open(&repo_path)
-        .map_err(|e| format!("Failed to open repository: {}", e))?;
-    
-    let mut remote = repo.find_remote("origin")
-        .map_err(|_| "No remote 'origin' found".to_string())?;
-    
-    let refs: &[&str] = &[];
-    remote.fetch(refs, None, None)
-        .map_err(|e| format!("Failed to fetch: {}", e))?;
-    
-    let fetch_head = repo.find_reference("FETCH_HEAD")
-        .map_err(|e| format!("Failed to find FETCH_HEAD: {}", e))?;
-    let fetch_commit = fetch_head.peel_to_commit()
-        .map_err(|e| format!("Failed to peel to commit: {}", e))?;
-    
-    let head = repo.head()
-        .map_err(|e| format!("Failed to get HEAD: {}", e))?;
-    let head_commit = head.peel_to_commit()
-        .map_err(|e| format!("Failed to peel to commit: {}", e))?;
-    
-    repo.merge_commits(&head_commit, &fetch_commit, None)
-        .map_err(|e| format!("Failed to merge: {}", e))?;
+    // Open VS Code so user can use integrated git features
+    open_in_vscode(repo_path)?;
     
     Ok(())
 }
