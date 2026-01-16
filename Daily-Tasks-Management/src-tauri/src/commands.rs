@@ -284,6 +284,42 @@ pub fn git_commit(
     let mut index = repo.index()
         .map_err(|e| format!("Failed to get index: {}", e))?;
     
+    // Get status to find all changed files
+    let mut opts = git2::StatusOptions::new();
+    opts.include_untracked(true);
+    opts.include_ignored(false);
+    
+    let statuses = repo.statuses(Some(&mut opts))
+        .map_err(|e| format!("Failed to get status: {}", e))?;
+    
+    // Stage all modified, deleted, and untracked files
+    for entry in statuses.iter() {
+        if let Some(path) = entry.path() {
+            let status = entry.status();
+            
+            // Add modified, new, or deleted files
+            if status.is_wt_new() || status.is_wt_modified() || status.is_wt_deleted() {
+                if status.is_wt_deleted() {
+                    // Remove deleted files from index
+                    index.remove_path(std::path::Path::new(path))
+                        .map_err(|e| format!("Failed to remove {} from index: {}", path, e))?;
+                } else {
+                    // Add new or modified files to index
+                    index.add_path(std::path::Path::new(path))
+                        .map_err(|e| format!("Failed to add {} to index: {}", path, e))?;
+                }
+            }
+        }
+    }
+    
+    // Write the index to disk
+    index.write()
+        .map_err(|e| format!("Failed to write index: {}", e))?;
+    
+    // Get the updated index and write tree
+    let mut index = repo.index()
+        .map_err(|e| format!("Failed to get updated index: {}", e))?;
+    
     let tree_id = index.write_tree()
         .map_err(|e| format!("Failed to write tree: {}", e))?;
     let tree = repo.find_tree(tree_id)
@@ -292,18 +328,26 @@ pub fn git_commit(
     let sig = repo.signature()
         .map_err(|e| format!("Failed to get signature: {}", e))?;
     
-    let head = repo.head()
-        .map_err(|e| format!("Failed to get HEAD: {}", e))?;
-    let parent = head.peel_to_commit()
-        .map_err(|e| format!("Failed to peel to commit: {}", e))?;
+    // Get parent commit (if exists)
+    let parents = if let Ok(head) = repo.head() {
+        if let Ok(parent) = head.peel_to_commit() {
+            vec![parent]
+        } else {
+            Vec::new()
+        }
+    } else {
+        Vec::new()
+    };
     
+    // Create commit
+    let parent_refs: Vec<&git2::Commit> = parents.iter().collect();
     repo.commit(
         Some("HEAD"),
         &sig,
         &sig,
         &message,
         &tree,
-        &[&parent],
+        &parent_refs,
     ).map_err(|e| format!("Failed to commit: {}", e))?;
     
     Ok(())
@@ -355,10 +399,13 @@ pub fn open_in_vscode(project_path: String) -> Result<(), String> {
             }
         }
         
-        return Err("Failed to open VS Code. Please install VS Code and ensure 'code' command is available, or install VS Code from snap store.".to_string());
+        Err("Failed to open VS Code. Please install VS Code and ensure 'code' command is available, or install VS Code from snap store.".to_string())
     }
     
-    Ok(())
+    #[cfg(not(any(target_os = "windows", target_os = "macos", target_os = "linux")))]
+    {
+        Err("Unsupported platform".to_string())
+    }
 }
 
 #[tauri::command]

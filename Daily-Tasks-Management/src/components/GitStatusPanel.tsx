@@ -98,7 +98,7 @@ export function GitStatusPanel({ isDarkMode }: GitStatusPanelProps) {
           className={`btn-refresh ${isDarkMode ? 'dark' : 'light'}`}
           title="Refresh git status"
         >
-          🔄 Refresh
+          Refresh
         </button>
       </div>
 

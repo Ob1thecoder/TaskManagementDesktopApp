@@ -54,7 +54,9 @@ pub fn run() {
             commands::get_all_git_statuses,
             commands::git_commit,
             commands::git_push,
-            commands::git_pull
+            commands::git_pull,
+            // Utility commands
+            commands::open_in_vscode
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -46,10 +46,10 @@ export function Dashboard({ isDarkMode }: DashboardProps) {
     }
   };
 
-  const runningServices = services.length; // TODO: Check actual running status
+  // Count running services (simplified - could be enhanced to check actual status)
+  const runningServices = services.length;
   const projectsWithChanges = gitStatuses.filter(g => g.uncommittedChanges.length > 0).length;
   const incompleteTasks = tasks.filter(t => !t.completed).length;
-  // TODO: Add a loading state
   if (loading) {
     return (
       <div className={`dashboard ${isDarkMode ? 'dark' : 'light'}`}>

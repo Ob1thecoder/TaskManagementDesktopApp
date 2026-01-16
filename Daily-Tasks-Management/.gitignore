@@ -26,3 +26,4 @@ dist-ssr
 *.md
 agent_docs/
 .cursorrules
+tasks.db
