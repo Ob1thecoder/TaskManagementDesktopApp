@@ -1,18 +1,24 @@
-use crate::model::{LocalService, Service};
+use crate::model::{LocalService, Service, LogEntry};
 use std::process::Stdio;
 use std::sync::Arc;
 use tokio::sync::Mutex;
+use tokio::io::{AsyncBufReadExt, BufReader};
 use sysinfo::{System, Pid};
 use std::collections::HashMap;
+use chrono::Utc;
 
 pub struct ServiceManager {
     processes: Arc<Mutex<HashMap<u32, tokio::process::Child>>>,
+    logs: Arc<Mutex<HashMap<u32, Vec<LogEntry>>>>,
+    log_id_counter: Arc<Mutex<u32>>,
 }
 
 impl ServiceManager {
     pub fn new() -> Self {
         ServiceManager {
             processes: Arc::new(Mutex::new(HashMap::new())),
+            logs: Arc::new(Mutex::new(HashMap::new())),
+            log_id_counter: Arc::new(Mutex::new(1)),
         }
     }
 
@@ -41,11 +47,93 @@ impl ServiceManager {
         cmd.stdout(Stdio::piped());
         cmd.stderr(Stdio::piped());
 
-        let child = cmd.spawn()
+        let mut child = cmd.spawn()
             .map_err(|e| format!("Failed to start service: {}", e))?;
 
         // Get the PID
         let pid = child.id().unwrap_or(0);
+
+        // Capture stdout and stderr
+        let stdout = child.stdout.take();
+        let stderr = child.stderr.take();
+        
+        let service_id = service.id;
+        let logs = self.logs.clone();
+        let log_id_counter = self.log_id_counter.clone();
+
+        // Spawn task to read stdout
+        if let Some(stdout) = stdout {
+            let logs_clone = logs.clone();
+            let log_id_counter_clone = log_id_counter.clone();
+            tokio::spawn(async move {
+                let reader = BufReader::new(stdout);
+                let mut lines = reader.lines();
+                
+                while let Ok(Some(line)) = lines.next_line().await {
+                    let mut counter = log_id_counter_clone.lock().await;
+                    let id = *counter;
+                    *counter += 1;
+                    drop(counter);
+                    
+                    let log_entry = LogEntry {
+                        id,
+                        service_id,
+                        level: "info".to_string(),
+                        message: line,
+                        timestamp: Utc::now().to_rfc3339(),
+                    };
+                    
+                    let mut logs_map = logs_clone.lock().await;
+                    logs_map.entry(service_id)
+                        .or_insert_with(Vec::new)
+                        .push(log_entry);
+                    
+                    // Keep only last 1000 logs per service
+                    if let Some(service_logs) = logs_map.get_mut(&service_id) {
+                        if service_logs.len() > 1000 {
+                            service_logs.remove(0);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Spawn task to read stderr
+        if let Some(stderr) = stderr {
+            let logs_clone = logs.clone();
+            let log_id_counter_clone = log_id_counter.clone();
+            tokio::spawn(async move {
+                let reader = BufReader::new(stderr);
+                let mut lines = reader.lines();
+                
+                while let Ok(Some(line)) = lines.next_line().await {
+                    let mut counter = log_id_counter_clone.lock().await;
+                    let id = *counter;
+                    *counter += 1;
+                    drop(counter);
+                    
+                    let log_entry = LogEntry {
+                        id,
+                        service_id,
+                        level: "error".to_string(),
+                        message: line,
+                        timestamp: Utc::now().to_rfc3339(),
+                    };
+                    
+                    let mut logs_map = logs_clone.lock().await;
+                    logs_map.entry(service_id)
+                        .or_insert_with(Vec::new)
+                        .push(log_entry);
+                    
+                    // Keep only last 1000 logs per service
+                    if let Some(service_logs) = logs_map.get_mut(&service_id) {
+                        if service_logs.len() > 1000 {
+                            service_logs.remove(0);
+                        }
+                    }
+                }
+            });
+        }
 
         let mut processes = self.processes.lock().await;
         processes.insert(service.id, child);
@@ -107,5 +195,25 @@ impl ServiceManager {
         } else {
             None
         }
+    }
+
+    pub async fn get_service_logs(&self, service_id: u32, limit: Option<usize>) -> Vec<LogEntry> {
+        let logs = self.logs.lock().await;
+        if let Some(service_logs) = logs.get(&service_id) {
+            let mut result = service_logs.clone();
+            // Reverse to show newest first
+            result.reverse();
+            if let Some(limit) = limit {
+                result.truncate(limit);
+            }
+            result
+        } else {
+            Vec::new()
+        }
+    }
+
+    pub async fn clear_service_logs(&self, service_id: u32) {
+        let mut logs = self.logs.lock().await;
+        logs.remove(&service_id);
     }
 }

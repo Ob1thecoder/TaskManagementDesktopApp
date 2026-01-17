@@ -1,6 +1,6 @@
 import '../styles/navigation.css';
 
-export type ViewType = 'dashboard' | 'projects' | 'services' | 'git' | 'tasks';
+export type ViewType = 'dashboard' | 'projects' | 'services' | 'git' | 'tasks' | 'logs';
 
 interface NavigationProps {
   currentView: ViewType;
@@ -15,6 +15,7 @@ export function Navigation({ currentView, onViewChange, isDarkMode }: Navigation
     { id: 'services', label: 'Services'},
     { id: 'git', label: 'Git' },
     { id: 'tasks', label: 'Tasks' },
+    { id: 'logs', label: 'Logs' },
   ];
 
   return (

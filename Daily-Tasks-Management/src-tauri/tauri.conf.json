@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "daily-tasks-management",
+        "title": "Local Development Tasks Dashboard",
         "width": 1400,
         "height": 900
       }

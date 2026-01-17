@@ -6,6 +6,7 @@ pub mod optimization;
 pub mod projects;
 pub mod services;
 pub mod git;
+// pub mod database_browser; // Temporarily removed for business logic focus 
 
 use database::Database;
 use services::ServiceManager;
@@ -49,6 +50,7 @@ pub fn run() {
             commands::stop_service,
             commands::restart_service,
             commands::get_service_status,
+            commands::get_service_logs,
             // Git commands
             commands::get_git_status_for_project,
             commands::get_all_git_statuses,

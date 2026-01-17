@@ -12,6 +12,7 @@ import { Dashboard } from './components/Dashboard';
 import { ProjectsPanel } from './components/ProjectsPanel';
 import { ServicesPanel } from './components/ServicesPanel';
 import { GitStatusPanel } from './components/GitStatusPanel';
+import { LogViewer } from './components/LogViewer';
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>(() => {
@@ -148,6 +149,8 @@ function App() {
         return <GitStatusPanel isDarkMode={isDarkMode} />;
       case 'tasks':
         return renderTasksView();
+      case 'logs':
+        return <LogViewer isDarkMode={isDarkMode} />;
       default:
         return <Dashboard isDarkMode={isDarkMode} />;
     }

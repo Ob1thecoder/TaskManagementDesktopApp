@@ -198,6 +198,15 @@ pub async fn get_service_status(
     Ok(service_mgr.is_service_running(id).await)
 }
 
+#[tauri::command]
+pub async fn get_service_logs(
+    service_mgr: State<'_, ServiceMgrState>,
+    service_id: u32,
+    limit: Option<usize>,
+) -> Result<Vec<LogEntry>, String> {
+    Ok(service_mgr.get_service_logs(service_id, limit).await)
+}
+
 // Git commands
 #[tauri::command]
 pub fn get_git_status_for_project(

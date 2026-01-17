@@ -5,7 +5,7 @@
 }
 
 .app-container.light {
-  background-color: #f9fafb;
+  background-color: #fcfdfe;
   color: #111827;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .app-header.light {
-  background-color: white;
+  background-color: rgb(202, 224, 232);
   border-color: #e5e7eb;
 }
 
